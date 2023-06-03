@@ -2,12 +2,13 @@
 
 struct FlipUp : public Event {};
 struct FlipDown : public Event {};
+struct UnusedEvent : public Event {};
 
-class Light : public State {
+class Light : public State<Light> {
 public:
-    // const char* TAG() { return "Light"; }
-    virtual void enter(const Event& e);
-    virtual Light* handle_event(const Event& e);
+    void enter(const Event& e);
+    virtual void enter(const FlipUp& e);
+    Light* handle_event(const Event& e);
     virtual Light* handle_event(const FlipUp& e);
     virtual Light* handle_event(const FlipDown& e);
 };
@@ -15,6 +16,7 @@ public:
 class LightOn : public Light {
 public:
     LightOn(int intensity) : _intensity(intensity) {}
+    void enter(const FlipUp& e) override;
     Light* handle_event(const FlipDown& e) override;
 private:
     int _intensity;
