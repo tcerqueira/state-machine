@@ -3,8 +3,10 @@
 
 int main() {
     auto fsm = StateMachine<Light>(new LightOn(5));
-    fsm.send_event(FlipDown());
-    fsm.send_event(FlipUp());
-    // fsm.send_event(UnusedEvent());
+    fsm.sendEvent(FlipDown());
+    fsm.sendEvent(FlipUp());
+    fsm.sendEvent(UnusedEvent());
+    fsm.sendEvent(FlipDown());
+    fsm.sendEvent(FlipDown());
     fsm.current();
 }
