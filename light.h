@@ -1,4 +1,4 @@
-#include "state_machine.h"
+#include "StateMachine.hpp"
 
 struct FlipUp : public Event {};
 struct FlipDown : public Event {};
