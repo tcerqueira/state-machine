@@ -3,6 +3,65 @@
  * @copyright (C) 2022-2023 BMW AG
  */
 
+/**
+ * #################################### USAGE ####################################
+ * ###############################################################################
+ */
+
+/**
+ *   Usage:
+ *   
+ *   struct FlipSwitchUp : Event {};
+ *   struct FlipSwitchDown : Event {};
+ *   strcut RotaryIntensity : Event {
+ *       int mIntensity;
+ *   };
+*/
+
+/**
+ *   Usage:
+ *   
+ *   class Light : public State<Light> {
+ *   public:
+ *       // Provides defaults to catch all undeclared events in class (optional).
+ *       using State<Light>::enter;
+ *       using State<Light>::handleEvent;
+ *
+ *       // Non-virtual so all states behave the same when transiting from the
+ *       // given event.
+ *       void enter(const RotaryIntensity& e) {}
+ *
+ *       // Declaration of the events that the states will handle.
+ *       // Default implementation is required.
+ *       virtual void enter(const FlipSwitchUp& e) {}
+ *       virtual void enter(const FlipSwitchDown& e) {}
+ *
+ *       // Return the next state object. Base class takes ownership.
+ *       // Return nullptr means 'Don't change state'.
+ *       virtual Light* handleEvent(const FlipSwitchUp& e) {return nullptr;}
+ *       virtual Light* handleEvent(const FlipSwitchDown& e) {return nullptr;}
+ *   };
+ */
+
+/**
+ * Usage:
+ * 
+ * class LightOn : public Light {
+ *   public:
+ *       LightOn(int intensity) : mIntensity(intensity) {}
+ *       void enter(const FlipUp& e) override;
+ *       Light* handle_event(const FlipDown& e) override;
+ *   private:
+ *       int mIntensity;
+ *   };
+ *   
+ *   class LightOff : public Light {
+ *   public:
+ *       Light* handle_event(const FlipUp& e) override;
+ *   };
+ * 
+ */
+ 
 #include <type_traits>
 
 /**
@@ -180,62 +239,3 @@ private:
 private:
     TBaseState *mState;
 };
-
-/**
- * #################################### USAGE ####################################
- */
-
-/**
- *   Base class that every event declared event must derive from.
- *   Usage:
- *   
- *   struct FlipSwitchUp : Event {};
- *   struct FlipSwitchDown : Event {};
- *   strcut RotaryIntensity : Event {
- *       int mIntensity;
- *   };
-*/
-
-/**
- *   Usage:
- *   
- *   class Light : public State<Light> {
- *   public:
- *       // Provides defaults to catch all undeclared events in class (optional).
- *       using State<Light>::enter;
- *       using State<Light>::handleEvent;
- *
- *       // Non-virtual so all states behave the same when transiting from the
- *       // given event.
- *       void enter(const RotaryIntensity& e) {}
- *
- *       // Declaration of the events that the states will handle.
- *       // Default implementation is required.
- *       virtual void enter(const FlipSwitchUp& e) {}
- *       virtual void enter(const FlipSwitchDown& e) {}
- *
- *       // Return the next state object. Base class takes ownership.
- *       // Return nullptr means 'Don't change state'.
- *       virtual Light* handleEvent(const FlipSwitchUp& e) {return nullptr;}
- *       virtual Light* handleEvent(const FlipSwitchDown& e) {return nullptr;}
- *   };
- */
-
-/**
- * Usage:
- * 
- * class LightOn : public Light {
- *   public:
- *       LightOn(int intensity) : mIntensity(intensity) {}
- *       void enter(const FlipUp& e) override;
- *       Light* handle_event(const FlipDown& e) override;
- *   private:
- *       int mIntensity;
- *   };
- *   
- *   class LightOff : public Light {
- *   public:
- *       Light* handle_event(const FlipUp& e) override;
- *   };
- * 
- */
