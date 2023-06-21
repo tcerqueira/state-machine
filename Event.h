@@ -1,8 +1,3 @@
-/**
- * @file
- * @copyright (C) 2022-2023 BMW AG
- */
-
 #pragma once
 
 namespace fsm {
