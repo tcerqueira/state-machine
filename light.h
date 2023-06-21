@@ -1,29 +1,29 @@
-#include "StateMachine.hpp"
+#include "State.h"
 
-struct FlipUp : public Event {};
-struct FlipDown : public Event {};
-struct UnusedEvent : public Event {};
+struct FlipUp : public fsm::Event {};
+struct FlipDown : public fsm::Event {};
+struct UnusedEvent : public fsm::Event {};
 
-class Light : public State<Light> {
+class Light : public fsm::State<Light> {
 public:
-    using State<Light>::enter;
-    using State<Light>::handleEvent;
+    using fsm::State<Light>::enter;
+    using fsm::State<Light>::handleEvent;
     
     virtual void enter(const FlipUp& e);
-    virtual Light* handleEvent(const FlipUp& e);
-    virtual Light* handleEvent(const FlipDown& e);
+    virtual std::unique_ptr<Light> handleEvent(const FlipUp& e);
+    virtual std::unique_ptr<Light> handleEvent(const FlipDown& e);
 };
 
 class LightOn : public Light {
 public:
     LightOn(int intensity) : _intensity(intensity) {}
     void enter(const FlipUp& e) override;
-    Light* handleEvent(const FlipDown& e) override;
+    std::unique_ptr<Light> handleEvent(const FlipDown& e) override;
 private:
     int _intensity;
 };
 
 class LightOff : public Light {
 public:
-    Light* handleEvent(const FlipUp& e) override;
+    std::unique_ptr<Light> handleEvent(const FlipUp& e) override;
 };
