@@ -132,7 +132,7 @@ class StateMachine {
                   "Template parameter of state must derive from 'State'. Hint: 'BaseStateClass : public State {...}'");
 
     template <typename TInitState>
-    explicit StateMachine(std::unique_ptr<TInitState>&& init_state) : mState{std::move(init_state)} {
+    explicit StateMachine(std::unique_ptr<TInitState>&& initState) : mState{std::move(initState)} {
         /**
          *   Assert that state type is base of initial state type.
          */
@@ -180,7 +180,7 @@ class StateMachine {
     template <typename TEvent>
     void handleEvent(const TEvent& evt) {
         std::unique_ptr<TBaseState> nextState = mState->handleEvent(evt);
-        if (nextState == nullptr) {
+        if (nextState == nullptr) { // Don't change state
             return;
         }
 
