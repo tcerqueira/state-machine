@@ -41,6 +41,16 @@ struct State {
      */
     virtual std::unique_ptr<T> handleEvent(const Event& /*evt*/) { return nullptr; }
 
+    /**
+     * @brief Method called when the state machine exits the state.
+     *  Override this method to handle the exitting of a state.
+     *  Also provides a default implementation that can be brought to scope
+     *  by declaring 'using State<Light>::exit;'.
+     *
+     * @param evt Event that was emmited to exit this state.
+     */
+    virtual void exit(const Event& /*evt*/) {}
+
     // void base_state_method_dont_hide() {}
 };
 

@@ -87,8 +87,7 @@ struct has_handleEvent<C, Ret(Args...)> {
     template <typename T>
     static constexpr auto check(T*) ->
             typename std::is_same<decltype(std::declval<T>().handleEvent(std::declval<Args>()...)),
-                                  Ret       // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                  >::type;  // attempt to call it and see if the return type is correct
+                                  Ret>::type;  // attempt to call it and see if the return type is correct
 
     template <typename>
     static constexpr std::false_type check(...);
@@ -110,8 +109,7 @@ struct has_enter<C, Ret(Args...)> {
     template <typename T>
     static constexpr auto check(T*) ->
             typename std::is_same<decltype(std::declval<T>().enter(std::declval<Args>()...)),
-                                  Ret       // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                  >::type;  // attempt to call it and see if the return type is correct
+                                  Ret>::type;  // attempt to call it and see if the return type is correct
 
     template <typename>
     static constexpr std::false_type check(...);
@@ -180,10 +178,11 @@ class StateMachine {
     template <typename TEvent>
     void handleEvent(const TEvent& evt) {
         std::unique_ptr<TBaseState> nextState = mState->handleEvent(evt);
-        if (nextState == nullptr) { // Don't change state
+        if (nextState == nullptr) {  // Don't change state
             return;
         }
 
+        mState->exit(evt);
         mState = std::move(nextState);
         mState->enter(evt);
     }
