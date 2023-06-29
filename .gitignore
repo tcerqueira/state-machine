@@ -1,7 +1,6 @@
 *.out
 *.exe
 .vscode
-light-demo
 bin
 obj
 *.make
