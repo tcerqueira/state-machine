@@ -2,3 +2,7 @@
 *.exe
 .vscode
 light-demo
+bin
+obj
+*.make
+Makefile
